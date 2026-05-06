@@ -13,6 +13,12 @@ id_rsa.*
 *.tfstate.*
 .terraform/
 
-#WIP
+# Generated Ansible inventory
+ansible/inventory.ini
+.inventory.ini
+ansible/.inventory.ini
+
+# WIP
 domain-ssl-setup/
 upgrade/
+ansible/inventory.ini

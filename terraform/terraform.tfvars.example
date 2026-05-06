@@ -1,0 +1,8 @@
+# Copy this file to terraform.tfvars and replace the values.
+#
+# terraform.tfvars is intentionally ignored by Git because it contains
+# environment-specific settings and may contain secrets.
+
+proxmox_endpoint = "https://YOUR-PROXMOX-HOST:8006/api2/json"
+proxmox_user     = "root@pam"
+proxmox_password = "YOUR_PROXMOX_PASSWORD"
