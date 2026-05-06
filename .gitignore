@@ -1,0 +1,18 @@
+# SSH private keys
+id_rsa
+id_rsa.*
+*.pem
+*.key
+
+# Terraform variable files that may contain secrets
+*.tfvars
+*.tfvars.json
+
+# Terraform local state
+*.tfstate
+*.tfstate.*
+.terraform/
+
+#WIP
+domain-ssl-setup/
+upgrade/

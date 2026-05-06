@@ -1,0 +1,35 @@
+- name: Install K3s server
+  shell: |
+    curl -sfL https://get.k3s.io | sh -
+  args:
+    creates: /usr/local/bin/k3s
+
+- name: Get K3s token
+  shell: cat /var/lib/rancher/k3s/server/node-token
+  register: k3s_token
+  changed_when: false
+
+- name: Get K3s master IP
+  command: hostname -I
+  register: k3s_master_ip
+  changed_when: false
+
+- name: Set fact for joining
+  set_fact:
+    join_token: "{{ k3s_token.stdout }}"
+    master_ip: "{{ k3s_master_ip.stdout.split()[0] }}"
+
+- name: Fetch K3s kubeconfig from the node
+  ansible.builtin.fetch:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: ./kubeconfigs/{{ inventory_hostname }}-k3s.yaml
+    flat: yes
+  become: yes
+
+- name: Replace localhost with control plane IP in kubeconfig
+  ansible.builtin.replace:
+    path: ./kubeconfigs/{{ inventory_hostname }}-k3s.yaml
+    regexp: '127\.0\.0\.1'
+    replace: '{{ hostvars[inventory_hostname]["ansible_host"] | default(inventory_hostname) }}'
+  delegate_to: localhost
+  become: false

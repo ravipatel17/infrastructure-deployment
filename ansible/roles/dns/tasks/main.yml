@@ -1,0 +1,21 @@
+- name: Write netplan DNS override
+  become: true
+  copy:
+    dest: /etc/netplan/99-dns.yaml
+    mode: "0600"
+    content: |
+      network:
+        version: 2
+        ethernets:
+          eth0:
+            dhcp4: true
+            dhcp4-overrides:
+              use-dns: false
+            nameservers:
+              addresses:
+                - 1.1.1.1
+                - 8.8.8.8
+
+- name: Apply netplan
+  become: true
+  command: netplan apply
